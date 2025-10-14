@@ -1,0 +1,109 @@
+﻿################################################################################
+# .NET 8 C# Solution - ASP.NET Core Web API, WPF, MAUI, Blazor
+################################################################################
+
+# Build results
+bin/
+obj/
+out/
+[Dd]ebug*/
+[Rr]elease*/
+x64/
+x86/
+*.exe
+*.dll
+*.pdb
+*.appx
+*.appxbundle
+*.msix
+*.msixbundle
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.vspscc
+*.vssscc
+*.dbmdl
+*.dbproj.schemaview
+*.pidb
+*.svclog
+*.sdf
+*.cache
+*.msscci
+
+# Visual Studio
+.vs/
+.vscode/
+*.ncb
+*.sdf
+*.opensdf
+*.suo
+*.sln.docstates
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+*.snupkg
+
+# ASP.NET Core
+appsettings.*.json
+appsettings.json
+wwwroot/
+node_modules/
+bower_components/
+*.log
+
+# MAUI
+Platforms/
+Resources/
+*.apk
+*.aab
+*.ipa
+*.app
+*.xcarchive
+*.xcuserstate
+*.xcworkspace
+*.xcodeproj
+*.plist
+
+# WPF
+*.psess
+*.vsp
+*.vsix
+*.psess
+*.vspx
+
+# Blazor
+wwwroot/
+obj/
+bin/
+node_modules/
+dist/
+
+# Others
+TestResults/
+*.TestResults
+*.publish/
+*.DS_Store
+*.tgz
+*.tar.gz
+
+# Rider
+.idea/
+*.sln.iml
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# OS generated files
+.DS_Store
+*.swp
+*.bak
+*.tmp
+*.~*
+
+# End of file
