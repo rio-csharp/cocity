@@ -48,6 +48,7 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }} 
         script: |
           # 脚本将在你的 CentOS 服务器上执行
           # 拉取最新的 Docker 镜像
