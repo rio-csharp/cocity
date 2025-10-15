@@ -61,6 +61,6 @@ jobs:
           # 运行新的容器
           docker run -d \
             --name cocity-api-container \
-            -p 8080:9000 \
+            -p 9000:8080 \
             --restart always \
             ${{ secrets.DOCKERHUB_USERNAME }}/cocity-api:latest
