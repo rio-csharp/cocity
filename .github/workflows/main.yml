@@ -30,8 +30,8 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
-        context: .
-        file: ./Dockerfile
+        context: ./src
+        file: ./src/Dockerfile
         push: true # 推送到仓库
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/cocity-api:latest # 修改为你的 Docker Hub 仓库名
 
@@ -55,8 +55,8 @@ jobs:
 
           # 停止并删除旧的容器 (如果存在)
           # 使用 || true 是为了防止在第一次部署时因为找不到容器而报错
-          docker stop my-api-container || true
-          docker rm my-api-container || true
+          docker stop cocity-api-container || true
+          docker rm cocity-api-container || true
 
           # 运行新的容器
           docker run -d \
