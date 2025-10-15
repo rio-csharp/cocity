@@ -1,0 +1,66 @@
+name: Build and Deploy API to CentOS
+
+# 触发器：当有代码 push 到 main 分支时自动运行
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-push-docker-image:
+    # 运行环境：使用最新的 ubuntu 系统
+    runs-on: ubuntu-latest
+
+    steps:
+    # 步骤 1: 检出代码
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 步骤 2: 登录到 Docker Hub
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # 步骤 3: 设置 Docker Buildx (一个增强的构建工具)
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    # 步骤 4: 构建 Docker 镜像并推送到 Docker Hub
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true # 推送到仓库
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/cocity-api:latest # 修改为你的 Docker Hub 仓库名
+
+  deploy-to-server:
+    # 依赖：需要等上一个 job (build-and-push-docker-image) 成功后才运行
+    needs: build-and-push-docker-image
+    runs-on: ubuntu-latest
+
+    steps:
+    # 步骤 1: SSH 连接到服务器并执行部署命令
+    - name: Deploy to CentOS Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          # 脚本将在你的 CentOS 服务器上执行
+          # 拉取最新的 Docker 镜像
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cocity-api:latest
+
+          # 停止并删除旧的容器 (如果存在)
+          # 使用 || true 是为了防止在第一次部署时因为找不到容器而报错
+          docker stop my-api-container || true
+          docker rm my-api-container || true
+
+          # 运行新的容器
+          docker run -d \
+            --name cocity-api-container \
+            -p 9000:8080 \
+            --restart always \
+            ${{ secrets.DOCKERHUB_USERNAME }}/cocity-api:latest
