@@ -63,7 +63,8 @@ jobs:
           docker run -d \
             --name cocity-api-container \
             -p 9000:8080 \
-            --network elk \
+            --network elk-stack_elk \
             --restart always \
             -e ASPNETCORE_ENVIRONMENT=Production \
+            -e ELASTICSEARCH_PASSWORD=${{ secrets.ELASTICSEARCH_PASSWORD }} \
             ${{ secrets.DOCKERHUB_USERNAME }}/cocity-api:latest
