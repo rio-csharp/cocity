@@ -49,8 +49,6 @@ packages/
 *.snupkg
 
 # ASP.NET Core
-appsettings.*.json
-appsettings.json
 wwwroot/
 node_modules/
 bower_components/
