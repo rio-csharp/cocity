@@ -66,5 +66,5 @@ jobs:
             --network elk-stack_elk \
             --restart always \
             -e ASPNETCORE_ENVIRONMENT=Production \
-            -e ELASTICSEARCH_PASSWORD=${{ secrets.ELASTICSEARCH_PASSWORD }} \
+            -e Serilog__WriteTo__1__Args__password="${{ secrets.ELASTICSEARCH_PASSWORD }}" \
             ${{ secrets.DOCKERHUB_USERNAME }}/cocity-api:latest
