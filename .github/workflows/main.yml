@@ -63,5 +63,7 @@ jobs:
           docker run -d \
             --name cocity-api-container \
             -p 9000:8080 \
+            --network elk \
             --restart always \
+            -e ASPNETCORE_ENVIRONMENT=Production \
             ${{ secrets.DOCKERHUB_USERNAME }}/cocity-api:latest
