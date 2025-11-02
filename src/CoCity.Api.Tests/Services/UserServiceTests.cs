@@ -8,6 +8,7 @@ public class AuthServiceTests
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IPasswordService> _passwordServiceMock;
     private readonly Mock<ILogger<AuthService>> _loggerMock;
+    private readonly Mock<ITokenService> _tokenServiceMock;
     private readonly AuthService _authService;
     private readonly string _refreshToken = "Mnhroz8srEyMcea76KAsSg==";
 
@@ -16,7 +17,8 @@ public class AuthServiceTests
         _userRepositoryMock = new Mock<IUserRepository>();
         _passwordServiceMock = new Mock<IPasswordService>();
         _loggerMock = new Mock<ILogger<AuthService>>();
-        _authService = new AuthService(_loggerMock.Object, _userRepositoryMock.Object, _passwordServiceMock.Object);
+        _tokenServiceMock = new Mock<ITokenService>();
+        _authService = new AuthService(_loggerMock.Object, _userRepositoryMock.Object, _passwordServiceMock.Object, _tokenServiceMock.Object);
     }
 
     [Fact]
