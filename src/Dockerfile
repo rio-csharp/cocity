@@ -7,6 +7,7 @@ WORKDIR /source
 #    使用您 `ls` 命令确认的、确切的大小写文件名，避免使用通配符 '*'
 COPY ["cocity.sln", "."]
 COPY ["CoCity.Api/CoCity.Api.csproj", "./CoCity.Api/"]
+COPY ["CoCity.Api.Tests/CoCity.Api.Tests.csproj", "./CoCity.Api.Tests/"] 
 # 如果有其他项目（如 Shared），请在此处添加类似的 COPY 行
 
 # 2. 还原整个解决方案的依赖
@@ -17,7 +18,6 @@ RUN dotnet restore "cocity.sln"
 COPY . .
 
 # 4. 发布主项目 (CoCity.Api 项目)
-#    【关键修复】工作目录是 /source/CoCity.Api，因为我们的项目根目录在 /source
 WORKDIR "/source/CoCity.Api"
 RUN dotnet publish "CoCity.Api.csproj" -c Release -o /app/publish --no-restore
 

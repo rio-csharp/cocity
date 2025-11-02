@@ -26,6 +26,19 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+
+    # 步骤 3.6: 还原依赖
+    - name: Restore dependencies
+      run: dotnet restore ./src/cocity.sln
+
+    # 步骤 3.7: 运行单元测试
+    - name: Run tests
+      run: dotnet test ./src/cocity.sln --no-restore --verbosity normal
+
     # 步骤 4: 构建 Docker 镜像并推送到 Docker Hub
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
