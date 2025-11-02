@@ -105,3 +105,4 @@ ehthumbs.db
 *.~*
 
 # End of file
+/src/CoCity.Api/appsettings.Development.json

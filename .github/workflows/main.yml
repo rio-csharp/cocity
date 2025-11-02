@@ -67,4 +67,11 @@ jobs:
             --restart always \
             -e ASPNETCORE_ENVIRONMENT=Production \
             -e Serilog__WriteTo__1__Args__password="${{ secrets.ELASTICSEARCH_PASSWORD }}" \
+            -e LocalhostToken="${{ secrets.LOCALHOST_TOKEN }}" \
+            -e AllowedOrigins="${{ vars.ALLOWED_ORIGINS }}" \
+            -e Jwt__SecretKey="${{ secrets.JWT_SECRETKEY }}" \
+            -e Jwt__Issuer="${{ vars.JWT_ISSUER }}" \
+            -e Jwt__Audience="${{ vars.JWT_AUDIENCE }}" \
+            -e ConnectionStrings__DefaultConnection="${{ vars.DB_CONNECTION }}" \
+            -e Serilog__WriteTo__1__Args__nodes__0="${{ vars.ELASTICSEARCH_URL }}" \
             ${{ secrets.DOCKERHUB_USERNAME }}/cocity-api:latest

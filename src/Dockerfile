@@ -1,6 +1,6 @@
 # ---- Stage 1: Build ----
 # 使用 .NET SDK 镜像
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /source
 
 # 1. 复制 .sln 和所有 .csproj 文件
@@ -23,7 +23,7 @@ RUN dotnet publish "CoCity.Api.csproj" -c Release -o /app/publish --no-restore
 
 # ---- Stage 2: Final ----
 # 使用轻量级的 ASP.NET 运行时镜像
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
