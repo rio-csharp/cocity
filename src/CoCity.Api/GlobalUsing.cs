@@ -1,0 +1,17 @@
+﻿global using CoCity.Api.Data;
+global using CoCity.Api.Entities;
+global using CoCity.Api.Extensions;
+global using CoCity.Api.IRepositories;
+global using CoCity.Api.IServices;
+global using CoCity.Api.Middlewares;
+global using CoCity.Api.Models;
+global using CoCity.Api.Repositories;
+global using CoCity.Api.Services;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.HttpOverrides;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using Serilog;
+global using System.ComponentModel.DataAnnotations;
+global using System.Text.Json.Serialization;
+global using static System.ArgumentException;
