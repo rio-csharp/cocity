@@ -33,7 +33,7 @@ builder.Services.AddCors(options =>
     {
         policy.SetIsOriginAllowed(origin =>
         {
-            if (origin.StartsWith("http://localhost"))
+            if (origin.StartsWith("http://localhost") || origin.StartsWith("http://127.0.0.1") || origin.StartsWith("http://[::1]"))
                 return true;
             var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
 

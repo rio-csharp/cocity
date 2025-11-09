@@ -126,6 +126,8 @@ public class TokenService : ITokenService
     public async Task<bool> ValidateTokenUserAsync(string token, int userId)
     {
         var refreshToken = await _tokenRepository.GetByTokenAsync(token);
-        return refreshToken?.UserId == userId;
+        return refreshToken?.UserId == userId
+            && refreshToken.ExpiresAt > DateTime.UtcNow
+            && !refreshToken.IsRevoked;
     }
 }
