@@ -19,7 +19,13 @@ public class LocalhostAuthMiddleware
         var origin = context.Request.Headers["Origin"].FirstOrDefault();
         var host = context.Request.Host.Host;
 
-        if ((origin != null && origin.StartsWith("http://localhost")) || host == "localhost")
+        if (IsLocalhost(host))
+        {
+            await _next(context);
+            return;
+        }
+
+        if ((origin != null && IsLocalhostOrigin(origin)))
         {
             if (string.IsNullOrWhiteSpace(_requiredToken))
             {
@@ -29,7 +35,7 @@ public class LocalhostAuthMiddleware
             }
             if (!context.Request.Headers.TryGetValue(LocalhostTokenHeader, out var token) || token != _requiredToken)
             {
-                _logger.LogWarning("Unauthorized localhost access attempt from {Host}, the wrong token is [{Token}]", context.GetClientIp(), token);
+                _logger.LogWarning("Unauthorized localhost access attempt from {Client}, the wrong token is [{Token}]", context.GetClientIp(), token);
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 await context.Response.WriteAsync("Missing or invalid localhost token.");
                 return;
@@ -37,5 +43,27 @@ public class LocalhostAuthMiddleware
         }
 
         await _next(context);
+    }
+
+    private bool IsLocalhostOrigin(string origin)
+    {
+        if (string.IsNullOrEmpty(origin))
+            return false;
+        try
+        {
+            var uri = new Uri(origin);
+            return IsLocalhost(uri.Host);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private bool IsLocalhost(string host)
+    {
+        return host.Equals("localhost", StringComparison.OrdinalIgnoreCase)
+            || host.Equals("127.0.0.1")
+            || host.Equals("::1");
     }
 }
