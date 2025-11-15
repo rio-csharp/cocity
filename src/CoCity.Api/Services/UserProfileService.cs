@@ -59,12 +59,6 @@ public class UserProfileService : IUserProfileService
         var entity = await _repository.GetByUserIdAsync(currentUserId);
         if (entity == null) return false;
 
-        if (!DateOnly.TryParse(updateModel.Birthday, out var birthday))
-        {
-            _logger.LogWarning("Failed to parse birthday: {Birthday}", updateModel.Birthday);
-            return false;
-        }
-
         if (updateModel.NickName != null)
             entity.NickName = updateModel.NickName;
         if (updateModel.AvatarUrl != null)
@@ -73,8 +67,15 @@ public class UserProfileService : IUserProfileService
             entity.Bio = updateModel.Bio;
         if (updateModel.Gender != null)
             entity.Gender = updateModel.Gender;
-
-        entity.Birthday = birthday;
+        if (updateModel.Birthday != null)
+        {
+            if (!DateOnly.TryParse(updateModel.Birthday, out var birthday))
+            {
+                _logger.LogWarning("Failed to parse birthday: {Birthday}", updateModel.Birthday);
+                return false;
+            }
+            entity.Birthday = birthday;
+        }
 
         await _repository.UpdateAsync(entity);
         return true;
