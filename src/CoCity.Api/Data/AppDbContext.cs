@@ -19,5 +19,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<RefreshToken>()
             .HasIndex(rt => rt.Token)
             .IsUnique();
+
+        modelBuilder.Entity<UserProfile>()
+            .HasIndex(up => up.UserId)
+            .IsUnique();
     }
 }

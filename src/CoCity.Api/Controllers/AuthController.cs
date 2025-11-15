@@ -24,7 +24,16 @@ public class AuthController : ControllerBase
         var registerResponse = await _userService.RegisterAsync(registerRequest, clientIp);
 
         _logger.LogInformation("Creating user profile for UserId {UserId}", registerResponse.UserId);
-        await _userProfileService.CreateUserProfileAsync(registerResponse.UserId, registerRequest.UserName);
+        try
+        {
+            await _userProfileService.CreateUserProfileAsync(registerResponse.UserId, registerRequest.UserName);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to create user profile for UserId {UserId}", registerResponse.UserId);
+            await _userService.DeleteUserAsync(registerResponse.UserId);
+            return StatusCode(500, "User registration failed during profile creation. Please try again later.");
+        }
 
         return Ok(registerResponse);
     }

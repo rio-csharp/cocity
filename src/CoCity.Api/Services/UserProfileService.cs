@@ -3,10 +3,12 @@
 public class UserProfileService : IUserProfileService
 {
     private readonly IUserProfileRepository _repository;
+    private readonly ILogger<UserProfileService> _logger;
 
-    public UserProfileService(IUserProfileRepository repository)
+    public UserProfileService(IUserProfileRepository repository, ILogger<UserProfileService> logger)
     {
         _repository = repository;
+        _logger = logger;
     }
 
     private static UserProfileResponseModel? MapToResponseModel(UserProfile? entity)
@@ -32,7 +34,7 @@ public class UserProfileService : IUserProfileService
         return new UserProfileResponseModel(
             userId.ToString(),
             userName,
-            profile.NickName ?? "",
+            profile.NickName,
             profile.AvatarUrl,
             profile.Bio,
             profile.Gender,
@@ -57,6 +59,12 @@ public class UserProfileService : IUserProfileService
         var entity = await _repository.GetByUserIdAsync(currentUserId);
         if (entity == null) return false;
 
+        if (!DateOnly.TryParse(updateModel.Birthday, out var birthday))
+        {
+            _logger.LogWarning("Failed to parse birthday: {Birthday}", updateModel.Birthday);
+            return false;
+        }
+
         if (updateModel.NickName != null)
             entity.NickName = updateModel.NickName;
         if (updateModel.AvatarUrl != null)
@@ -66,8 +74,7 @@ public class UserProfileService : IUserProfileService
         if (updateModel.Gender != null)
             entity.Gender = updateModel.Gender;
 
-        if (updateModel.Birthday != null && DateOnly.TryParse(updateModel.Birthday, out var birthday))
-            entity.Birthday = birthday;
+        entity.Birthday = birthday;
 
         await _repository.UpdateAsync(entity);
         return true;

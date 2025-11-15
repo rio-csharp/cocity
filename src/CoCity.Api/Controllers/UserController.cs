@@ -1,4 +1,6 @@
-﻿namespace CoCity.Api.Controllers;
+﻿using CoCity.Api.Exceptions;
+
+namespace CoCity.Api.Controllers;
 
 [Authorize]
 [ApiController]
@@ -19,8 +21,8 @@ public class UserController : ControllerBase
     {
         var userId = this.GetUserId();
         _logger.LogInformation("Fetching profile for user {UserId} from IP {ClientIp}", userId, HttpContext.GetClientIp());
-
-        var profile = await _service.GetCurrentUserProfileAsync(userId);
+        if (userId == null) { throw new InvalidCredentialsException(); }
+        var profile = await _service.GetCurrentUserProfileAsync(userId.Value);
         if (profile == null) return NotFound();
         return Ok(profile);
     }
@@ -31,7 +33,8 @@ public class UserController : ControllerBase
         var currentUserId = this.GetUserId();
         _logger.LogInformation("User {CurrentUserId} from IP {ClientIp} is fetching profile for user {UserId}", currentUserId, HttpContext.GetClientIp(), userId);
 
-        var profile = await _service.GetUserProfileByIdAsync(currentUserId, userId);
+        if (currentUserId == null) { throw new InvalidCredentialsException(); }
+        var profile = await _service.GetUserProfileByIdAsync(currentUserId.Value, userId);
         if (profile == null) return NotFound();
         return Ok(profile);
     }
@@ -42,8 +45,9 @@ public class UserController : ControllerBase
         var userId = this.GetUserId();
         _logger.LogInformation("User {UserId} from IP {ClientIp} is updating their profile", userId, HttpContext.GetClientIp());
 
-        var updated = await _service.UpdateCurrentUserProfileAsync(userId, updateModel);
-        if (!updated) return NotFound();
+        if (userId == null) { throw new InvalidCredentialsException(); }
+        var updated = await _service.UpdateCurrentUserProfileAsync(userId.Value, updateModel);
+        if (!updated) throw new UpdateFailedException("user does not exist or birthday format is not correct.");
 
         return Ok(new UpdateUserProfileResponseModel("Profile updated successfully"));
     }
