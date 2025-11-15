@@ -21,8 +21,8 @@ public class UserController : ControllerBase
     {
         var userId = this.GetUserId();
         _logger.LogInformation("Fetching profile for user {UserId} from IP {ClientIp}", userId, HttpContext.GetClientIp());
-        if (userId == null) { throw new InvalidCredentialsException(); }
-        var profile = await _service.GetCurrentUserProfileAsync(userId.Value);
+
+        var profile = await _service.GetCurrentUserProfileAsync(userId);
         if (profile == null) return NotFound();
         return Ok(profile);
     }
@@ -33,8 +33,7 @@ public class UserController : ControllerBase
         var currentUserId = this.GetUserId();
         _logger.LogInformation("User {CurrentUserId} from IP {ClientIp} is fetching profile for user {UserId}", currentUserId, HttpContext.GetClientIp(), userId);
 
-        if (currentUserId == null) { throw new InvalidCredentialsException(); }
-        var profile = await _service.GetUserProfileByIdAsync(currentUserId.Value, userId);
+        var profile = await _service.GetUserProfileByIdAsync(currentUserId, userId);
         if (profile == null) return NotFound();
         return Ok(profile);
     }
@@ -45,8 +44,7 @@ public class UserController : ControllerBase
         var userId = this.GetUserId();
         _logger.LogInformation("User {UserId} from IP {ClientIp} is updating their profile", userId, HttpContext.GetClientIp());
 
-        if (userId == null) { throw new InvalidCredentialsException(); }
-        var updated = await _service.UpdateCurrentUserProfileAsync(userId.Value, updateModel);
+        var updated = await _service.UpdateCurrentUserProfileAsync(userId, updateModel);
         if (!updated) throw new UpdateFailedException("user does not exist or birthday format is not correct.");
 
         return Ok(new UpdateUserProfileResponseModel("Profile updated successfully"));

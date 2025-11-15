@@ -2,7 +2,7 @@
 
 public static class ControllerExtension
 {
-    public static int? GetUserId(this ControllerBase controller)
+    public static int GetUserId(this ControllerBase controller)
     {
         var userIdString = controller.User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value
             ?? controller.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -10,6 +10,6 @@ public static class ControllerExtension
         {
             return userId;
         }
-        return null;
+        return 0; // this should not happen if the user is authenticated
     }
 }

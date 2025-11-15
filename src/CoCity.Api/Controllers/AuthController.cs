@@ -54,7 +54,6 @@ public class AuthController : ControllerBase
     {
         var clientIp = HttpContext.GetClientIp();
         _logger.LogInformation("Refresh token request from IP {ClientIp}", clientIp);
-
         var refreshResponse = await _userService.RefreshTokenAsync(refreshRequest, this.GetUserId());
         return Ok(refreshResponse);
     }
