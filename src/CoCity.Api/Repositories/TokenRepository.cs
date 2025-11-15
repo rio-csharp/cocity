@@ -1,5 +1,4 @@
-﻿
-namespace CoCity.Api.Repositories;
+﻿namespace CoCity.Api.Repositories;
 
 public class TokenRepository : Repository<RefreshToken>, ITokenRepository
 {

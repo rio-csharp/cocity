@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace CoCity.Api.Tests.MiddlewareTests;
+
 public class LocalhostAuthMiddlewareTests
 {
     private static DefaultHttpContext CreateContext(string host, string origin = null, string token = null)
