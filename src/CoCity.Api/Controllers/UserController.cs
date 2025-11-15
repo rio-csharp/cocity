@@ -1,4 +1,6 @@
-﻿namespace CoCity.Api.Controllers;
+﻿using CoCity.Api.Exceptions;
+
+namespace CoCity.Api.Controllers;
 
 [Authorize]
 [ApiController]
@@ -43,7 +45,7 @@ public class UserController : ControllerBase
         _logger.LogInformation("User {UserId} from IP {ClientIp} is updating their profile", userId, HttpContext.GetClientIp());
 
         var updated = await _service.UpdateCurrentUserProfileAsync(userId, updateModel);
-        if (!updated) return NotFound();
+        if (!updated) throw new UpdateFailedException("user does not exist or birthday format is not correct. Expected format: YYYY-MM-DD.");
 
         return Ok(new UpdateUserProfileResponseModel("Profile updated successfully"));
     }

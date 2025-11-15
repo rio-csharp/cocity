@@ -10,6 +10,6 @@ public static class ControllerExtension
         {
             return userId;
         }
-        return 0;
+        return 0; // this should not happen if the user is authenticated
     }
 }

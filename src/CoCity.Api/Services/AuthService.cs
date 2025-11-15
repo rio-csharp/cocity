@@ -48,6 +48,13 @@ public class AuthService : IAuthService
         return new ChangePasswordResponse("Password changed successfully");
     }
 
+    public Task DeleteUserAsync(int userId)
+    {
+        _logger.LogInformation("Delete account request for user ID: {UserId}", userId);
+
+        return _userRepository.DeleteAsync(userId);
+    }
+
     public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
     {
         _logger.LogInformation("Login attempt for user: {UserName}", loginRequest.UserName);

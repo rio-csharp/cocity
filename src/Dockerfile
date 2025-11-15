@@ -1,6 +1,6 @@
 # ---- Stage 1: Build ----
 # 使用 .NET SDK 镜像
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /source
 
 # 1. 复制 .sln 和所有 .csproj 文件

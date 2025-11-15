@@ -11,4 +11,5 @@ public interface IAuthService
     Task<LogoutResponse> LogoutAsync(LogoutRequest logoutRequest, int userId);
 
     Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest changePasswordRequest, int userId);
+    Task DeleteUserAsync(int userId);
 }

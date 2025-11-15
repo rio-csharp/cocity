@@ -183,8 +183,6 @@ public class UserControllerTests
             HttpContext = httpContext
         };
 
-        var result = await controller.UpdateCurrentUserProfile(updateModel);
-
-        Assert.IsType<NotFoundResult>(result.Result);
+        await Assert.ThrowsAsync<UpdateFailedException>(() => controller.UpdateCurrentUserProfile(updateModel));
     }
 }
