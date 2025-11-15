@@ -116,11 +116,7 @@ public class AuthService : IAuthService
         }
 
         var hashedPassword = _passwordService.HashPassword(registerRequest.Password);
-        var newUser = new User(registerRequest.UserName, hashedPassword);
-        if (!string.IsNullOrWhiteSpace(registerIp))
-        {
-            newUser.RegisterIp = registerIp;
-        }
+        var newUser = new User(registerRequest.UserName, hashedPassword, registerIp);
 
         var createdUser = await _userRepository.AddAsync(newUser);
         var response = new RegisterResponse(createdUser.Id, createdUser.UserName);

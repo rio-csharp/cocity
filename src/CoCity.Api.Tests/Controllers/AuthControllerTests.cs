@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CoCity.Api.Tests.Controllers;
+
 public class AuthControllerTests
 {
     [Fact]

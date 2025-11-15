@@ -23,7 +23,7 @@ RUN dotnet publish "CoCity.Api.csproj" -c Release -o /app/publish --no-restore
 
 # ---- Stage 2: Final ----
 # 使用轻量级的 ASP.NET 运行时镜像
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
