@@ -5,8 +5,10 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
+
     public DbSet<User> Users { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<UserProfile> UserProfiles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -16,6 +18,10 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<RefreshToken>()
             .HasIndex(rt => rt.Token)
+            .IsUnique();
+
+        modelBuilder.Entity<UserProfile>()
+            .HasIndex(up => up.UserId)
             .IsUnique();
     }
 }

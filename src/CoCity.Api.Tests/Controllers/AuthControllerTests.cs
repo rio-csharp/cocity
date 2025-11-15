@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CoCity.Api.Tests.Controllers;
+
 public class AuthControllerTests
 {
     [Fact]
@@ -12,7 +13,8 @@ public class AuthControllerTests
     {
         var mockAuthService = new Mock<IAuthService>();
         var mockLogger = new Mock<ILogger<AuthController>>();
-        var controller = new AuthController(mockAuthService.Object, mockLogger.Object);
+        var mockUserProfileService = new Mock<IUserProfileService>();
+        var controller = new AuthController(mockAuthService.Object, mockUserProfileService.Object, mockLogger.Object);
 
         var registerRequest = new RegisterRequest("testuser", "password123");
         var expectedResponse = new RegisterResponse(1, "testuser");
@@ -41,7 +43,8 @@ public class AuthControllerTests
     {
         var mockAuthService = new Mock<IAuthService>();
         var mockLogger = new Mock<ILogger<AuthController>>();
-        var controller = new AuthController(mockAuthService.Object, mockLogger.Object);
+        var mockUserProfileService = new Mock<IUserProfileService>();
+        var controller = new AuthController(mockAuthService.Object, mockUserProfileService.Object, mockLogger.Object);
 
         var loginRequest = new LoginRequest("testuser", "password123");
         var expectedUser = new LoginRequestResponse(1, "testuser");
@@ -74,7 +77,8 @@ public class AuthControllerTests
     {
         var mockAuthService = new Mock<IAuthService>();
         var mockLogger = new Mock<ILogger<AuthController>>();
-        var controller = new AuthController(mockAuthService.Object, mockLogger.Object);
+        var mockUserProfileService = new Mock<IUserProfileService>();
+        var controller = new AuthController(mockAuthService.Object, mockUserProfileService.Object, mockLogger.Object);
 
         var refreshRequest = new RefreshRequest("refresh_token");
         var expectedResponse = new RefreshResponse("access", "refresh", 3600);
@@ -106,7 +110,8 @@ public class AuthControllerTests
     {
         var mockAuthService = new Mock<IAuthService>();
         var mockLogger = new Mock<ILogger<AuthController>>();
-        var controller = new AuthController(mockAuthService.Object, mockLogger.Object);
+        var mockUserProfileService = new Mock<IUserProfileService>();
+        var controller = new AuthController(mockAuthService.Object, mockUserProfileService.Object, mockLogger.Object);
 
         var logoutRequest = new LogoutRequest("refresh_token");
         var expectedResponse = new LogoutResponse("Logged out");
@@ -136,7 +141,8 @@ public class AuthControllerTests
     {
         var mockAuthService = new Mock<IAuthService>();
         var mockLogger = new Mock<ILogger<AuthController>>();
-        var controller = new AuthController(mockAuthService.Object, mockLogger.Object);
+        var mockUserProfileService = new Mock<IUserProfileService>();
+        var controller = new AuthController(mockAuthService.Object, mockUserProfileService.Object, mockLogger.Object);
 
         var changePasswordRequest = new ChangePasswordRequest("oldpwd", "newpwd123", "refresh_token");
         var expectedResponse = new ChangePasswordResponse("Password changed");

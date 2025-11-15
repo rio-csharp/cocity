@@ -48,6 +48,13 @@ public class AuthService : IAuthService
         return new ChangePasswordResponse("Password changed successfully");
     }
 
+    public Task DeleteUserAsync(int userId)
+    {
+        _logger.LogInformation("Delete account request for user ID: {UserId}", userId);
+
+        return _userRepository.DeleteAsync(userId);
+    }
+
     public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
     {
         _logger.LogInformation("Login attempt for user: {UserName}", loginRequest.UserName);
@@ -116,11 +123,7 @@ public class AuthService : IAuthService
         }
 
         var hashedPassword = _passwordService.HashPassword(registerRequest.Password);
-        var newUser = new User(registerRequest.UserName, hashedPassword);
-        if (!string.IsNullOrWhiteSpace(registerIp))
-        {
-            newUser.RegisterIp = registerIp;
-        }
+        var newUser = new User(registerRequest.UserName, hashedPassword, registerIp);
 
         var createdUser = await _userRepository.AddAsync(newUser);
         var response = new RegisterResponse(createdUser.Id, createdUser.UserName);

@@ -4,6 +4,7 @@ using System.Net;
 using System.Text.Json;
 
 namespace CoCity.Api.Tests.MiddlewareTests;
+
 public class ExceptionHandlingMiddlewareTests
 {
     [Fact]

@@ -12,6 +12,7 @@ public class TokenService : ITokenService
     private readonly string _issuer;
     private readonly string _audience;
     private readonly ITokenRepository _tokenRepository;
+
     public TokenService(IConfiguration configuration, ITokenRepository tokenRepository)
     {
         _configuration = configuration;

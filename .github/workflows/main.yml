@@ -3,7 +3,9 @@ name: Build and Deploy API to CentOS
 # 触发器：当有代码 push 到 main 分支时自动运行
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
 
 jobs:
   build-and-push-docker-image:
@@ -29,7 +31,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '10.0.x'
 
     # 步骤 3.6: 还原依赖
     - name: Restore dependencies
@@ -39,19 +41,20 @@ jobs:
     - name: Run tests
       run: dotnet test ./src/cocity.sln --no-restore --verbosity normal
 
-    # 步骤 4: 构建 Docker 镜像并推送到 Docker Hub
+    # 步骤 4: 构建 Docker镜像并推送到Dockerhub
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
         context: ./src
         file: ./src/Dockerfile
-        push: true # 推送到仓库
+        push: ${{ github.ref == 'refs/heads/main' }} # 推送到仓库
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/cocity-api:latest # 修改为你的 Docker Hub 仓库名
 
   deploy-to-server:
     # 依赖：需要等上一个 job (build-and-push-docker-image) 成功后才运行
     needs: build-and-push-docker-image
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
 
     steps:
     # 步骤 1: SSH 连接到服务器并执行部署命令
